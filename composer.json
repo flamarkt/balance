@@ -1,0 +1,47 @@
+{
+    "name": "flamarkt/balance",
+    "description": "User balance and payment method.",
+    "keywords": [
+        "flarum",
+        "flamarkt",
+        "marketplace",
+        "ecommerce",
+        "balance"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^0.1.0-beta.16",
+        "flamarkt/core": "^0.1.0"
+    },
+    "authors": [
+        {
+            "name": "Flamarkt",
+            "homepage": "https://flamarkt.org/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/flamarkt/balance/issues",
+        "source": "https://github.com/flamarkt/balance"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flamarkt\\Balance\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Balance",
+            "category": "flamarkt",
+            "icon": {
+                "name": "fas fa-money-bill",
+                "backgroundColor": "#266a13",
+                "color": "#fff"
+            }
+        },
+        "flamarkt-backoffice": {
+            "showInBackoffice": true,
+            "hideFromAdmin": true
+        }
+    }
+}
