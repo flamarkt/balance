@@ -2,6 +2,7 @@
 
 namespace Flamarkt\Balance;
 
+use Flamarkt\Core\Order\Event\Paying;
 use Flarum\Api\Serializer\UserSerializer;
 use Flarum\Extend;
 use Flarum\User\User;
@@ -34,4 +35,7 @@ return [
 
     (new Extend\ModelVisibility(History::class))
         ->scope(Scope\View::class),
+
+    (new Extend\Event())
+        ->listen(Paying::class, Listener\PayingOrder::class),
 ];

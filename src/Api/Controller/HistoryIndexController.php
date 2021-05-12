@@ -19,6 +19,14 @@ class HistoryIndexController extends AbstractListController
         'order',
     ];
 
+    public $sortFields = [
+        'createdAt',
+    ];
+
+    public $sort = [
+        'createdAt' => 'desc',
+    ];
+
     protected $repository;
     protected $filterer;
     protected $url;
