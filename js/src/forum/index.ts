@@ -6,6 +6,13 @@ import History from '../common/models/History';
 import BalancePage from './pages/BalancePage';
 import ItemList from 'flarum/common/utils/ItemList';
 import formatPrice from 'flamarkt/core/common/helpers/formatPrice';
+import {common} from '../common/compat';
+import {forum} from './compat';
+
+export {
+    common,
+    forum,
+};
 
 app.initializers.add('flamarkt-balance', () => {
     app.store.models['flamarkt-balance-history'] = History;

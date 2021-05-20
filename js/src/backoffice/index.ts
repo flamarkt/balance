@@ -6,6 +6,13 @@ import {extend} from 'flarum/common/extend';
 import ItemList from 'flarum/common/utils/ItemList';
 import Button from 'flarum/common/components/Button';
 import AdjustBalanceModal from './components/AdjustBalanceModal';
+import {common} from '../common/compat';
+import {backoffice} from './compat';
+
+export {
+    common,
+    backoffice,
+};
 
 app.initializers.add('flamarkt-balance', () => {
     app.store.models['flamarkt-balance-history'] = History;

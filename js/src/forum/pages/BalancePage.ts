@@ -1,10 +1,10 @@
-import AbstractAccountPage from 'flamarkt/core/forum/pages/AbstractAccountPage';
-import formatPrice from 'flamarkt/core/common/helpers/formatPrice';
-import humanTime from 'flarum/common/helpers/humanTime';
+import Page from 'flarum/common/components/Page';
 import HistoryState from '../states/HistoryState';
-import History from '../../common/models/History';
+import BalanceLayout from '../layouts/BalanceLayout';
 
-export default class BalancePage extends AbstractAccountPage {
+export default class BalancePage extends Page {
+    state!: HistoryState;
+
     oninit(vnode) {
         super.oninit(vnode);
 
@@ -18,26 +18,9 @@ export default class BalancePage extends AbstractAccountPage {
         this.state.refresh();
     }
 
-    breadcrumbItems() {
-        const items = super.breadcrumbItems();
-
-        items.add('current', m('span.breadcrumb-current', 'Balance'));
-
-        return items;
-    }
-
-    content() {
-        return m('div', [
-            m('p', [
-                'Current balance: ',
-                formatPrice(app.session.user.attribute('flamarktBalance')),
-            ]),
-            m('ul', this.state.pages.map(page => page.items.map((history: History) => m('li', [
-                humanTime(history.createdAt()),
-                ': ',
-                formatPrice(history.amount()),
-            ])))),
-            //TODO: pagination
-        ]);
+    view() {
+        return BalanceLayout.component({
+            state: this.state,
+        });
     }
 }
