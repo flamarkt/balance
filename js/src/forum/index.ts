@@ -1,7 +1,7 @@
 import {extend} from 'flarum/common/extend';
 import LinkButton from 'flarum/common/components/LinkButton';
 import AccountControls from 'flamarkt/core/forum/utils/AccountControls';
-import CartPage from 'flamarkt/core/forum/pages/CartPage';
+import CartLayout from 'flamarkt/core/forum/layouts/CartLayout';
 import History from '../common/models/History';
 import BalancePage from './pages/BalancePage';
 import ItemList from 'flarum/common/utils/ItemList';
@@ -28,11 +28,11 @@ app.initializers.add('flamarkt-balance', () => {
         }, 'Balance'));
     });
 
-    extend(CartPage.prototype, 'oninit', function (this: CartPage) {
+    extend(CartLayout.prototype, 'oninit', function (this: CartLayout) {
         this.payWithBalance = false;
     });
 
-    extend(CartPage.prototype, 'sectionPayment', function (this: CartPage, items: ItemList) {
+    extend(CartLayout.prototype, 'sectionPayment', function (this: CartLayout, items: ItemList) {
         const balance = app.session.user.attribute('flamarktBalance');
 
         items.add('balance', m('.Form-group', [
@@ -43,7 +43,7 @@ app.initializers.add('flamarkt-balance', () => {
                     onchange: () => {
                         this.payWithBalance = !this.payWithBalance;
                     },
-                    disabled: balance < this.cart.priceTotal(),
+                    disabled: balance < this.attrs.cart.priceTotal(),
                 }),
                 ' Pay with balance (',
                 formatPrice(balance),
@@ -52,7 +52,7 @@ app.initializers.add('flamarkt-balance', () => {
         ]));
     });
 
-    extend(CartPage.prototype, 'data', function (this: CartPage, data) {
+    extend(CartLayout.prototype, 'data', function (this: CartLayout, data) {
         data.payWithBalance = this.payWithBalance;
     });
 });
