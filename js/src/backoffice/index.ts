@@ -3,6 +3,7 @@ import UserList from 'flamarkt/core/backoffice/components/UserList';
 import UserShowPage from 'flamarkt/core/backoffice/pages/UserShowPage';
 import formatPrice from 'flamarkt/core/common/helpers/formatPrice';
 import {extend} from 'flarum/common/extend';
+import User from 'flarum/common/models/User';
 import ItemList from 'flarum/common/utils/ItemList';
 import Button from 'flarum/common/components/Button';
 import AdjustBalanceModal from './components/AdjustBalanceModal';
@@ -17,11 +18,11 @@ export {
 app.initializers.add('flamarkt-balance', () => {
     app.store.models['flamarkt-balance-history'] = History;
 
-    extend(UserList.prototype, 'head', function (columns) {
+    extend(UserList.prototype, 'head', function (columns: ItemList) {
         columns.add('balance', m('th', 'Balance'));
     });
 
-    extend(UserList.prototype, 'columns', function (columns, user) {
+    extend(UserList.prototype, 'columns', function (columns: ItemList, user: User) {
         columns.add('balance', m('td', formatPrice(user.attribute('flamarktBalance'))));
     });
 

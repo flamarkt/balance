@@ -22,7 +22,7 @@ app.initializers.add('flamarkt-balance', () => {
         component: BalancePage,
     };
 
-    extend(AccountControls, 'controls', items => {
+    extend(AccountControls, 'controls', function (items: ItemList) {
         items.add('balance', LinkButton.component({
             href: app.route('flamarkt.account.balance'),
         }, 'Balance'));
@@ -52,7 +52,7 @@ app.initializers.add('flamarkt-balance', () => {
         ]));
     });
 
-    extend(CartLayout.prototype, 'data', function (this: CartLayout, data) {
+    extend(CartLayout.prototype, 'data', function (this: CartLayout, data: any) {
         data.payWithBalance = this.payWithBalance;
     });
 });

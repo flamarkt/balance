@@ -5,7 +5,7 @@ namespace Flamarkt\Balance\Api\Controller;
 use Flamarkt\Balance\Api\Serializer\HistorySerializer;
 use Flamarkt\Balance\History;
 use Flarum\Api\Controller\AbstractCreateController;
-use Flarum\User\User;
+use Flarum\Http\RequestUtil;
 use Flarum\User\UserRepository;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,10 +24,7 @@ class HistoryStoreController extends AbstractCreateController
 
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        /**
-         * @var User $actor
-         */
-        $actor = $request->getAttribute('actor');
+        $actor = RequestUtil::getActor($request);
 
         $actor->assertCan('backoffice');
 

@@ -5,6 +5,7 @@ namespace Flamarkt\Balance\Api\Controller;
 use Flamarkt\Balance\Api\Serializer\HistorySerializer;
 use Flamarkt\Balance\HistoryFilterer;
 use Flarum\Api\Controller\AbstractListController;
+use Flarum\Http\RequestUtil;
 use Flarum\Http\UrlGenerator;
 use Flarum\Query\QueryCriteria;
 use Flarum\User\UserRepository;
@@ -40,7 +41,7 @@ class HistoryIndexController extends AbstractListController
 
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        $actor = $request->getAttribute('actor');
+        $actor = RequestUtil::getActor($request);
         $filters = $this->extractFilter($request);
         $sort = $this->extractSort($request);
 
@@ -59,6 +60,8 @@ class HistoryIndexController extends AbstractListController
             $results->areMoreResults() ? null : 0
         );
 
-        return $results->getResults()->load($include);
+        $this->loadRelations($results->getResults(), $include);
+
+        return $results->getResults();
     }
 }

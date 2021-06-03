@@ -5,6 +5,7 @@ namespace Flamarkt\Balance\Api\Controller;
 use Flamarkt\Balance\Api\Serializer\HistorySerializer;
 use Flamarkt\Balance\History;
 use Flarum\Api\Controller\AbstractShowController;
+use Flarum\Http\RequestUtil;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
@@ -15,7 +16,7 @@ class HistoryUpdateController extends AbstractShowController
 
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        $request->getAttribute('actor')->assertCan('backoffice');
+        RequestUtil::getActor($request)->assertCan('backoffice');
 
         $id = Arr::get($request->getQueryParams(), 'id');
 
