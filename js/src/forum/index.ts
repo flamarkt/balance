@@ -43,7 +43,7 @@ app.initializers.add('flamarkt-balance', () => {
                     onchange: () => {
                         this.payWithBalance = !this.payWithBalance;
                     },
-                    disabled: balance < this.attrs.cart.priceTotal(),
+                    disabled: balance < this.attrs.cart.priceTotal() || this.submitting,
                 }),
                 ' Pay with balance (',
                 formatPrice(balance),
