@@ -1,6 +1,7 @@
-import AbstractListState from 'flamarkt/core/common/states/AbstractListState';
+import AbstractListState from 'flamarkt/backoffice/common/states/AbstractListState';
+import History from '../../common/models/History';
 
-export default class HistoryState extends AbstractListState {
+export default class HistoryState extends AbstractListState<History> {
     type() {
         return 'flamarkt/balance';
     }

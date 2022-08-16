@@ -4,8 +4,7 @@ import AccountControls from 'flamarkt/core/forum/utils/AccountControls';
 import CartLayout from 'flamarkt/core/forum/layouts/CartLayout';
 import History from '../common/models/History';
 import BalancePage from './pages/BalancePage';
-import ItemList from 'flarum/common/utils/ItemList';
-import formatPrice from 'flamarkt/core/common/helpers/formatPrice';
+import PriceLabel from 'flamarkt/core/common/components/PriceLabel';
 import {common} from '../common/compat';
 import {forum} from './compat';
 
@@ -22,17 +21,17 @@ app.initializers.add('flamarkt-balance', () => {
         component: BalancePage,
     };
 
-    extend(AccountControls, 'controls', function (items: ItemList) {
+    extend(AccountControls, 'controls', function (items) {
         items.add('balance', LinkButton.component({
             href: app.route('flamarkt.account.balance'),
         }, 'Balance'));
     });
 
-    extend(CartLayout.prototype, 'oninit', function (this: CartLayout) {
+    extend(CartLayout.prototype, 'oninit', function () {
         this.payWithBalance = false;
     });
 
-    extend(CartLayout.prototype, 'sectionPayment', function (this: CartLayout, items: ItemList) {
+    extend(CartLayout.prototype, 'sectionPayment', function (items) {
         const balance = app.session.user.attribute('flamarktBalance');
 
         items.add('balance', m('.Form-group', [
@@ -46,7 +45,9 @@ app.initializers.add('flamarkt-balance', () => {
                     disabled: balance < this.attrs.cart.priceTotal() || this.submitting,
                 }),
                 ' Pay with balance (',
-                formatPrice(balance),
+                PriceLabel.component({
+                    value: balance,
+                }),
                 ')',
             ]),
         ]));

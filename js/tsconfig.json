@@ -4,6 +4,9 @@
         "src/**/*",
         "../vendor/flarum/core/js/dist-typings/@types/**/*"
     ],
+    "files": [
+        "shims.d.ts"
+    ],
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
