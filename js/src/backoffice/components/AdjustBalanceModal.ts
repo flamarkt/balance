@@ -1,8 +1,13 @@
-import Modal from 'flarum/common/components/Modal';
+import {Children} from 'mithril';
+import Modal, {IInternalModalAttrs} from 'flarum/common/components/Modal';
 import ItemList from 'flarum/common/utils/ItemList';
 import Button from 'flarum/common/components/Button';
 
-export default class AdjustBalanceModal extends Modal {
+interface AdjustBalanceModalAttrs extends IInternalModalAttrs {
+    userId: string
+}
+
+export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
     amount: number = 0;
     comment: string = '';
     saving: boolean = false;
@@ -11,16 +16,16 @@ export default class AdjustBalanceModal extends Modal {
         return m('.Modal-body', this.fields().toArray());
     }
 
-    fields(): ItemList {
-        const fields = new ItemList();
+    fields(): ItemList<Children> {
+        const fields = new ItemList<Children>();
 
         fields.add('amount', m('.Form-group', [
             m('local', 'Amount'),
             m('input.FormControl', {
                 type: 'number',
                 value: this.amount,
-                onchange: event => {
-                    this.amount = event.target.value;
+                onchange: (event: InputEvent) => {
+                    this.amount = parseInt((event.target as HTMLInputElement).value);
                 },
             }),
         ]));
@@ -29,8 +34,8 @@ export default class AdjustBalanceModal extends Modal {
             m('local', 'Comment'),
             m('textarea.FormControl', {
                 value: this.comment,
-                onchange: event => {
-                    this.comment = event.target.value;
+                onchange: (event: InputEvent) => {
+                    this.comment = (event.target as HTMLInputElement).value;
                 },
             }),
         ]));
@@ -52,7 +57,7 @@ export default class AdjustBalanceModal extends Modal {
         };
     }
 
-    onsubmit(event) {
+    onsubmit(event: Event) {
         event.preventDefault();
 
         this.saving = true;

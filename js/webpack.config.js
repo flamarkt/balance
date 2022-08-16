@@ -1,8 +1,8 @@
 const config = require('flarum-webpack-config')();
 
 config.entry = {
-    backoffice: './backoffice.js',
-    forum: './forum.js',
+    backoffice: './backoffice.ts',
+    forum: './forum.ts',
 };
 
 config.externals.push(function (context, request, callback) {
