@@ -4,16 +4,17 @@ namespace Flamarkt\Balance\Filter;
 
 use Flarum\Filter\FilterInterface;
 use Flarum\Filter\FilterState;
-use Flarum\User\UserRepository;
-use Illuminate\Database\Query\Builder;
+use Flarum\Http\SlugManager;
+use Flarum\User\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserFilter implements FilterInterface
 {
-    protected $users;
+    protected $slugManager;
 
-    public function __construct(UserRepository $users)
+    public function __construct(SlugManager $slugManager)
     {
-        $this->users = $users;
+        $this->slugManager = $slugManager;
     }
 
     public function getFilterKey(): string
@@ -23,19 +24,27 @@ class UserFilter implements FilterInterface
 
     public function filter(FilterState $filterState, string $filterValue, bool $negate)
     {
-        $this->constrain($filterState->getQuery(), $filterValue, $negate);
-    }
+        $slugs = trim($filterValue, '"');
+        $slugs = explode(',', $slugs);
 
-    protected function constrain(Builder $query, $rawUsernames, $negate)
-    {
-        $usernames = trim($rawUsernames, '"');
-        $usernames = explode(',', $usernames);
-
-        $ids = [];
-        foreach ($usernames as $username) {
-            $ids[] = $this->users->getIdForUsername($username);
+        if (count($slugs) === 0) {
+            return;
         }
 
-        $query->whereIn('flamarkt_balance_history.user_id', $ids, 'and', $negate);
+        $slugger = $this->slugManager->forResource(User::class);
+
+        $ids = [];
+        foreach ($slugs as $slug) {
+            try {
+                $ids[] = $slugger->fromSlug($slug, $filterState->getActor())->id;
+            } catch (ModelNotFoundException $exception) {
+                // If there's an invalid or invisible user slug requested, return no results
+                // TODO: we could throw a 400 error for invalid parameter
+                $filterState->getQuery()->whereRaw('1=0');
+                return;
+            }
+        }
+
+        $filterState->getQuery()->whereIn('flamarkt_balance_history.user_id', $ids, 'and', $negate);
     }
 }
