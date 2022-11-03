@@ -1,9 +1,9 @@
 import BalanceLayout from './layouts/BalanceLayout';
 import BalancePage from './pages/BalancePage';
-import HistoryState from './states/HistoryState';
+import HistoryListState from './states/HistoryListState';
 
 export const forum = {
     'layouts/BalanceLayout': BalanceLayout,
     'pages/BalancePage': BalancePage,
-    'states/HistoryState': HistoryState,
+    'states/HistoryListState': HistoryListState,
 }

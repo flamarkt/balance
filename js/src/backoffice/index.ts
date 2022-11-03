@@ -1,3 +1,4 @@
+import app from 'flamarkt/backoffice/backoffice/app';
 import History from '../common/models/History';
 import UserList from 'flamarkt/backoffice/backoffice/components/UserList';
 import UserShowPage from 'flamarkt/backoffice/backoffice/pages/UserShowPage';

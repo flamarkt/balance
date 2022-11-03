@@ -1,3 +1,4 @@
+import app from 'flarum/forum/app';
 import {extend} from 'flarum/common/extend';
 import LinkButton from 'flarum/common/components/LinkButton';
 import AccountControls from 'flamarkt/core/forum/utils/AccountControls';
@@ -32,7 +33,7 @@ app.initializers.add('flamarkt-balance', () => {
     });
 
     extend(CartLayout.prototype, 'sectionPayment', function (items) {
-        const balance = app.session.user.attribute('flamarktBalance');
+        const balance = app.session.user ? app.session.user.attribute<number>('flamarktBalance') : 0;
 
         items.add('balance', m('.Form-group', [
             m('label', [
@@ -42,7 +43,7 @@ app.initializers.add('flamarkt-balance', () => {
                     onchange: () => {
                         this.payWithBalance = !this.payWithBalance;
                     },
-                    disabled: balance < this.attrs.cart.priceTotal() || this.submitting,
+                    disabled: balance < this.attrs.cart!.priceTotal() || this.submitting,
                 }),
                 ' Pay with balance (',
                 PriceLabel.component({

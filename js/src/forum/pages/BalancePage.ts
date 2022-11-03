@@ -1,26 +1,25 @@
 import app from 'flarum/forum/app';
 import Page from 'flarum/common/components/Page';
-import HistoryState from '../states/HistoryState';
+import HistoryListState from '../states/HistoryListState';
 import BalanceLayout from '../layouts/BalanceLayout';
 
 export default class BalancePage extends Page {
-    historyState!: HistoryState;
+    list!: HistoryListState;
 
     oninit(vnode: any) {
         super.oninit(vnode);
 
-        // @ts-ignore
-        this.historyState = new HistoryState({
+        this.list = new HistoryListState({
             filter: {
                 user: app.session.user?.slug(),
             },
         });
-        this.historyState.refresh();
+        this.list.refresh();
     }
 
     view() {
         return BalanceLayout.component({
-            state: this.historyState,
+            list: this.list,
         });
     }
 }

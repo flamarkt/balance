@@ -1,3 +1,4 @@
+import app from 'flamarkt/backoffice/backoffice/app';
 import {Children} from 'mithril';
 import Modal, {IInternalModalAttrs} from 'flarum/common/components/Modal';
 import ItemList from 'flarum/common/utils/ItemList';
@@ -12,6 +13,14 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
     comment: string = '';
     saving: boolean = false;
 
+    className() {
+        return 'AdjustBalanceModal';
+    }
+
+    title() {
+        return 'Adjust Balance';
+    }
+
     content() {
         return m('.Modal-body', this.fields().toArray());
     }
@@ -20,7 +29,7 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
         const fields = new ItemList<Children>();
 
         fields.add('amount', m('.Form-group', [
-            m('local', 'Amount'),
+            m('label', 'Amount'),
             m('input.FormControl', {
                 type: 'number',
                 value: this.amount,
@@ -31,7 +40,7 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
         ]));
 
         fields.add('comment', m('.Form-group', [
-            m('local', 'Comment'),
+            m('label', 'Comment'),
             m('textarea.FormControl', {
                 value: this.comment,
                 onchange: (event: InputEvent) => {

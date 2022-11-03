@@ -5,10 +5,10 @@ import AbstractAccountLayout from 'flamarkt/core/forum/layouts/AbstractAccountLa
 import PriceLabel from 'flamarkt/core/common/components/PriceLabel';
 import humanTime from 'flarum/common/helpers/humanTime';
 import History from '../../common/models/History';
-import HistoryState from '../states/HistoryState';
+import HistoryListState from '../states/HistoryListState';
 
 interface BalanceLayoutAttrs extends ComponentAttrs {
-    state: HistoryState
+    list: HistoryListState
 }
 
 export default class BalanceLayout extends AbstractAccountLayout<BalanceLayoutAttrs> {
@@ -34,7 +34,7 @@ export default class BalanceLayout extends AbstractAccountLayout<BalanceLayoutAt
             })
         ]), 20);
 
-        sections.add('history', m('ul', this.attrs.state.pages.map(page => page.items.map((history: History) => m('li', [
+        sections.add('history', m('ul', this.attrs.list.pages.map(page => page.items.map((history: History) => m('li', [
             humanTime(history.createdAt()!),
             ': ',
             m(PriceLabel, {

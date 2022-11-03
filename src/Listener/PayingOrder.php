@@ -11,7 +11,7 @@ class PayingOrder
     // TODO: use payment extender
     public function handle(Paying $event)
     {
-        if (!Arr::get($event->data, 'data.attributes.payWithBalance')) {
+        if (!Arr::get($event->data, 'attributes.payWithBalance')) {
             return;
         }
 
