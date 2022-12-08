@@ -28,15 +28,12 @@ class HistoryIndexController extends AbstractListController
         'createdAt' => 'desc',
     ];
 
-    protected $repository;
-    protected $filterer;
-    protected $url;
-
-    public function __construct(UserRepository $repository, HistoryFilterer $filterer, UrlGenerator $url)
+    public function __construct(
+        protected UserRepository  $repository,
+        protected HistoryFilterer $filterer,
+        protected UrlGenerator    $url
+    )
     {
-        $this->repository = $repository;
-        $this->filterer = $filterer;
-        $this->url = $url;
     }
 
     protected function data(ServerRequestInterface $request, Document $document)

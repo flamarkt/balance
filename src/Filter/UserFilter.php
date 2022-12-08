@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserFilter implements FilterInterface
 {
-    protected $slugManager;
-
-    public function __construct(SlugManager $slugManager)
+    public function __construct(
+        protected SlugManager $slugManager
+    )
     {
-        $this->slugManager = $slugManager;
     }
 
     public function getFilterKey(): string

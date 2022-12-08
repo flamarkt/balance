@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 class PayingOrder
 {
     // TODO: use payment extender
-    public function handle(Paying $event)
+    public function handle(Paying $event): void
     {
         if (!Arr::get($event->data, 'attributes.payWithBalance')) {
             return;

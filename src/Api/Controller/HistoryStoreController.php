@@ -15,11 +15,10 @@ class HistoryStoreController extends AbstractCreateController
 {
     public $serializer = HistorySerializer::class;
 
-    protected $repository;
-
-    public function __construct(UserRepository $repository)
+    public function __construct(
+        protected UserRepository $repository
+    )
     {
-        $this->repository = $repository;
     }
 
     protected function data(ServerRequestInterface $request, Document $document)
