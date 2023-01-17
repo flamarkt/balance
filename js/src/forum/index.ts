@@ -1,11 +1,12 @@
 import app from 'flarum/forum/app';
-import {extend} from 'flarum/common/extend';
+import {extend, override} from 'flarum/common/extend';
 import LinkButton from 'flarum/common/components/LinkButton';
 import AccountControls from 'flamarkt/core/forum/utils/AccountControls';
 import CartLayout from 'flamarkt/core/forum/layouts/CartLayout';
 import History from '../common/models/History';
 import BalancePage from './pages/BalancePage';
 import PriceLabel from 'flamarkt/core/common/components/PriceLabel';
+import OrderFactPayment from 'flamarkt/core/forum/components/OrderFactPayment';
 import {common} from '../common/compat';
 import {forum} from './compat';
 
@@ -56,5 +57,14 @@ app.initializers.add('flamarkt-balance', () => {
 
     extend(CartLayout.prototype, 'data', function (this: CartLayout, data: any) {
         data.payWithBalance = this.payWithBalance;
+    });
+
+    override(OrderFactPayment.prototype, 'label', function (original) {
+        if (this.attrs.payment.method() === 'balance') {
+            // TODO: option to use icon
+            return 'Balance';
+        }
+
+        return original();
     });
 });
