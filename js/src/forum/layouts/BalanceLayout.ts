@@ -3,6 +3,7 @@ import {ComponentAttrs} from 'flarum/common/Component';
 import ItemList from 'flarum/common/utils/ItemList';
 import AbstractAccountLayout from 'flamarkt/core/forum/layouts/AbstractAccountLayout';
 import PriceLabel from 'flamarkt/core/common/components/PriceLabel';
+import Link from 'flarum/common/components/Link';
 import humanTime from 'flarum/common/helpers/humanTime';
 import History from '../../common/models/History';
 import HistoryListState from '../states/HistoryListState';
@@ -40,6 +41,12 @@ export default class BalanceLayout extends AbstractAccountLayout<BalanceLayoutAt
             m(PriceLabel, {
                 value: history.amount(),
             }),
+            history.order() ? [
+                ' ',
+                m(Link, {
+                    href: app.route.order(history.order()),
+                }, 'Order #' + history.order().number()),
+            ] : null,
             history.comment() ? [
                 ' ',
                 m('em', '(' + history.comment() + ')'),

@@ -1,25 +1,30 @@
-import app from 'flamarkt/backoffice/backoffice/app';
-import {Children} from 'mithril';
+import {Children, Vnode} from 'mithril';
 import Modal, {IInternalModalAttrs} from 'flarum/common/components/Modal';
 import ItemList from 'flarum/common/utils/ItemList';
 import Button from 'flarum/common/components/Button';
+import Order from 'flamarkt/core/common/models/Order';
 import PriceInput from 'flamarkt/core/common/components/PriceInput';
 
-interface AdjustBalanceModalAttrs extends IInternalModalAttrs {
-    userId: string
+interface AdjustOrderPaymentModalAttrs extends IInternalModalAttrs {
+    order: Order
 }
 
-export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
+export default class AdjustOrderPaymentModal extends Modal<AdjustOrderPaymentModalAttrs> {
     amount: number = 0;
-    comment: string = '';
     saving: boolean = false;
 
     className() {
-        return 'AdjustBalanceModal';
+        return 'AdjustOrderPayment';
     }
 
     title() {
-        return 'Adjust Balance';
+        return 'Pay/reimburse order with balance';
+    }
+
+    oninit(vnode: Vnode) {
+        super.oninit(vnode);
+
+        this.amount = this.attrs.order.priceTotal() - this.attrs.order.paidAmount();
     }
 
     content() {
@@ -39,16 +44,6 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
             }),
         ]));
 
-        fields.add('comment', m('.Form-group', [
-            m('label', 'Comment'),
-            m('textarea.FormControl', {
-                value: this.comment,
-                onchange: (event: InputEvent) => {
-                    this.comment = (event.target as HTMLInputElement).value;
-                },
-            }),
-        ]));
-
         fields.add('submit', m('.Form-group', [
             Button.component({
                 type: 'submit',
@@ -61,8 +56,7 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
 
     data() {
         return {
-            amount: this.amount,
-            comment: this.comment,
+            manualBalancePayAdjustment: this.amount,
         };
     }
 
@@ -71,15 +65,7 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
 
         this.saving = true;
 
-        app.request({
-            method: 'POST',
-            url: app.forum.attribute('apiUrl') + '/flamarkt/users/' + this.attrs.userId + '/balance',
-            body: {
-                data: {
-                    attributes: this.data(),
-                },
-            },
-        }).then(() => {
+        this.attrs.order.save(this.data()).then(() => {
             this.saving = false;
 
             m.redraw();

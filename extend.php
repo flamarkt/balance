@@ -3,6 +3,7 @@
 namespace Flamarkt\Balance;
 
 use Flamarkt\Core\Order\Event\Paying;
+use Flamarkt\Core\Order\Event\Saving;
 use Flarum\Api\Serializer\UserSerializer;
 use Flarum\Extend;
 use Flarum\User\User;
@@ -37,5 +38,6 @@ return [
         ->scope(Scope\View::class),
 
     (new Extend\Event())
-        ->listen(Paying::class, Listener\PayingOrder::class),
+        ->listen(Paying::class, Listener\PayingOrder::class)
+        ->listen(Saving::class, Listener\SaveOrder::class),
 ];
