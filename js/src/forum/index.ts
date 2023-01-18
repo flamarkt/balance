@@ -44,7 +44,7 @@ app.initializers.add('flamarkt-balance', () => {
                     onchange: () => {
                         this.payWithBalance = !this.payWithBalance;
                     },
-                    disabled: balance < this.attrs.cart!.priceTotal() || this.submitting,
+                    disabled: balance < this.attrs.cart!.priceTotal() || this.submitting || !this.attrs.cart!.canCheckout(),
                 }),
                 ' Pay with balance (',
                 PriceLabel.component({
