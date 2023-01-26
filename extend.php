@@ -2,8 +2,9 @@
 
 namespace Flamarkt\Balance;
 
-use Flamarkt\Core\Order\Event\Paying;
-use Flamarkt\Core\Order\Event\Saving;
+use Flamarkt\Core\Api\Serializer\CartSerializer;
+use Flamarkt\Core\Cart\Event\Saving as SavingCart;
+use Flamarkt\Core\Order\Event\Saving as SavingOrder;
 use Flarum\Api\Serializer\UserSerializer;
 use Flarum\Extend;
 use Flarum\User\User;
@@ -31,6 +32,9 @@ return [
         ->attributes(UserAttributes::class)
         ->hasMany('flamarktBalanceHistory', Api\Serializer\HistorySerializer::class),
 
+    (new Extend\ApiSerializer(CartSerializer::class))
+        ->attributes(CartAttributes::class),
+
     (new Extend\Filter(HistoryFilterer::class))
         ->addFilter(Filter\UserFilter::class),
 
@@ -38,6 +42,12 @@ return [
         ->scope(Scope\View::class),
 
     (new Extend\Event())
-        ->listen(Paying::class, Listener\PayingOrder::class)
-        ->listen(Saving::class, Listener\SaveOrder::class),
+        ->listen(SavingCart::class, Listener\SaveCart::class)
+        ->listen(SavingOrder::class, Listener\SaveOrder::class),
+
+    (new Extend\Settings())
+        ->serializeToForum('flamarktBalanceHidePaymentMethodNoFunds', 'flamarkt-balance.hidePaymentMethodNoFunds', 'boolval'),
+
+    (new \Flamarkt\Core\Extend\Payment)
+        ->partialCallback(Pay::class),
 ];

@@ -18,6 +18,13 @@ export {
 };
 
 app.initializers.add('flamarkt-balance', () => {
+    app.extensionData.for('flamarkt-balance')
+        .registerSetting({
+            type: 'switch',
+            setting: 'flamarkt-balance.hidePaymentMethodNoFunds',
+            label: app.translator.trans('flamarkt-balance.backoffice.settings.hidePaymentMethodNoFunds'),
+        });
+
     app.store.models['flamarkt-balance-history'] = History;
 
     extend(UserList.prototype, 'head', function (columns) {

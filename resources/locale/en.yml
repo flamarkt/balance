@@ -1,1 +1,13 @@
 flamarkt-balance:
+    backoffice:
+        settings:
+            hidePaymentMethodNoFunds: Hide payment method if user balance is empty
+    forum:
+        cart:
+            use: Use balance amount ({amount})
+            checkout: Pay with balance
+            info:
+                amount: 'Current balance: {amount}'
+                account: Manage balance in <a>your account</a>
+        order:
+            paymentLabel: Balance
