@@ -41,6 +41,7 @@ export default class AdjustOrderPaymentModal extends Modal<AdjustOrderPaymentMod
                 onchange: (value: number) => {
                     this.amount = value;
                 },
+                disabled: this.saving,
             }),
         ]));
 
@@ -48,6 +49,7 @@ export default class AdjustOrderPaymentModal extends Modal<AdjustOrderPaymentMod
             Button.component({
                 type: 'submit',
                 className: 'Button Button--primary',
+                loading: this.saving,
             }, 'Apply'),
         ]), -10);
 
@@ -66,16 +68,10 @@ export default class AdjustOrderPaymentModal extends Modal<AdjustOrderPaymentMod
         this.saving = true;
 
         this.attrs.order.save(this.data()).then(() => {
-            this.saving = false;
-
-            m.redraw();
-
             this.hide();
         }).catch(error => {
             this.saving = false;
-
             m.redraw();
-
             throw error;
         });
     }

@@ -46,6 +46,7 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
                 onchange: (event: InputEvent) => {
                     this.comment = (event.target as HTMLInputElement).value;
                 },
+                disabled: this.saving,
             }),
         ]));
 
@@ -53,6 +54,7 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
             Button.component({
                 type: 'submit',
                 className: 'Button Button--primary',
+                loading: this.saving,
             }, 'Apply'),
         ]), -10);
 
@@ -80,16 +82,10 @@ export default class AdjustBalanceModal extends Modal<AdjustBalanceModalAttrs> {
                 },
             },
         }).then(() => {
-            this.saving = false;
-
-            m.redraw();
-
             this.hide();
         }).catch(error => {
             this.saving = false;
-
             m.redraw();
-
             throw error;
         });
     }
